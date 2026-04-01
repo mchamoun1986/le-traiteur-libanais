@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galerie — Le Traiteur Libanais</title>
+  <meta name="description" content="Découvrez nos créations culinaires et nos événements. Galerie photo des mezzés, buffets, verrines et événements du Traiteur Libanais." />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+
+  <style>
+    /* Galerie-specific styles */
+    .galerie-filters {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+
+    .galerie-filters button {
+      padding: 0.75rem 1.5rem;
+      border: 2px solid var(--gold);
+      background: transparent;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 4px;
+    }
+
+    .galerie-filters button:hover {
+      background: var(--gold);
+      color: white;
+    }
+
+    .galerie-filters button.active {
+      background: var(--gold);
+      color: white;
+    }
+
+    .galerie-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .galerie-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      aspect-ratio: 1 / 1;
+      background: var(--bg-secondary);
+    }
+
+    .galerie-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .galerie-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .galerie-item-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      cursor: pointer;
+    }
+
+    .galerie-item:hover .galerie-item-overlay {
+      opacity: 1;
+    }
+
+    .galerie-item-overlay::before {
+      content: "🔍";
+      font-size: 2.5rem;
+      color: white;
+    }
+
+    /* Lightbox styles */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      z-index: 1001;
+    }
+
+    .lightbox-close:hover {
+      transform: scale(1.2);
+    }
+
+    #lightboxImg {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+
+    @media (max-width: 768px) {
+      .galerie-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .galerie-filters {
+        gap: 0.5rem;
+      }
+
+      .galerie-filters button {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar injected via JS -->
+  <div id="navbar"></div>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <section class="section" style="padding: 3rem 0;">
+    <div class="container">
+      <div class="section-title">
+        <h2>Notre Galerie</h2>
+        <div class="gold-line"></div>
+        <p class="section-subtitle">Découvrez nos créations culinaires et nos événements</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FILTERS ===== -->
+  <section class="section" style="padding-bottom: 0;">
+    <div class="container">
+      <div class="galerie-filters">
+        <button class="active" data-filter="tout" onclick="filterGalerie('tout')">Tout</button>
+        <button data-filter="mezzes" onclick="filterGalerie('mezzes')">Mezzés</button>
+        <button data-filter="buffets" onclick="filterGalerie('buffets')">Buffets</button>
+        <button data-filter="evenements" onclick="filterGalerie('evenements')">Événements</button>
+        <button data-filter="verrines" onclick="filterGalerie('verrines')">Verrines</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GALERIE GRID ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="galerie-grid">
+        <!-- Mezzés -->
+        <div class="galerie-item" data-category="mezzes">
+          <img src="https://images.unsplash.com/photo-1577805947697-89e18249d767?w=400" alt="Mezzés libanais" loading="lazy" />
+          <div class="galerie-item-overlay" onclick="openLightbox(this.querySelector('img').src.replace('w=400','w=1200'))"></div>
+        </div>
+
+        <div class="galerie-item" data-category="mezzes">
+          <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400" alt="Houmous et pains" loading="lazy" />
+          <div class="galerie-item-overlay" onclick="openLightbox(this.querySelector('img').src.replace('w=400','w=1200'))"></div>
+        </div>
+
+        <div class="galerie-item" data-category="mezzes">
+          <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=400" alt="Taboulé frais" loading="lazy" />
+          <div class="galerie-item-overlay" onclick="openLightbox(this.querySelector('img').src.replace('w=400','w=1200'))"></div>
+        </div>
+
+        <div class="galerie-item" data-category="mezzes">
+          <img src="https://images.unsplash.com/photo-1593001874117-c99c800e3eb7?w=400" alt="Assiette mezzés" loading="lazy" />
+          <div class="galerie-item-overlay" onclick="openLightbox(this.querySelector('img').src.replace('w=400','w=1200'))"></div>
+        </div>
+
+        <!-- Buffets -->
+        <div class="galerie-item" data-category="buffets">
+          <img src="https://images.unsplash.com/photo-1555244162-803834f70033?w=400" alt="Buffet événement" loading="lazy" />
+          <div class="galerie-item-overlay" onclick="openLightbox(this.querySelector('img').src.replace('w=400','w=1200'))"></div>
+        </div>
+
+        <div class="galerie-item" data-category="buffets">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400" alt="Buffet froid" loading="lazy" />
+          <div class="galerie-item-overlay" onclick="openLightbox(this.querySelector('img').src.replace('w=400','w=1200'))"></div>
+        </div>
+
+        <div class="galerie-item" data-category="buffets">
+          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" alt="Buffet complet" loading="lazy" />
+          <div class="galerie-item-overlay" onclick="openLightbox(this.querySelector('img').src.replace('w=400','w=1200'))"></div>
+        </div>
+
+        <div class="galerie-item" data-category="buffets">
+          <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=400" alt="Buffet service" loading="lazy" />
+          <div class="galerie-item-overlay" onclick="openLightbox(this.querySelector('img').src.replace('w=400','w=1200'))"></div>
+        </div>
+
+        <!-- Événements -->
+        <div class="galerie-item" data-category="evenements">
+          <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400" alt="Événement mariage" loading="lazy" />
+          <div class="galerie-item-overlay" onclick="openLightbox(this.querySelector('img').src.replace('w=400','w=1200'))"></div>
+        </div>
+
+        <div class="galerie-item" data-category="evenements">
+          <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400" alt="Événement corporate" loading="lazy" />
+          <div class="galerie-item-overlay" onclick="openLightbox(this.querySelector('img').src.replace('w=400','w=1200'))"></div>
+        </div>
+
+        <div class="galerie-item" data-category="evenements">
+          <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400" alt="Événement réception" loading="lazy" />
+          <div class="galerie-item-overlay" onclick="openLightbox(this.querySelector('img').src.replace('w=400','w=1200'))"></div>
+        </div>
+
+        <!-- Verrines -->
+        <div class="galerie-item" data-category="verrines">
+          <img src="https://images.unsplash.com/photo-1541014741259-de529411b96a?w=400" alt="Verrines élégantes" loading="lazy" />
+          <div class="galerie-item-overlay" onclick="openLightbox(this.querySelector('img').src.replace('w=400','w=1200'))"></div>
+        </div>
+
+        <div class="galerie-item" data-category="verrines">
+          <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400" alt="Verrines dessert" loading="lazy" />
+          <div class="galerie-item-overlay" onclick="openLightbox(this.querySelector('img').src.replace('w=400','w=1200'))"></div>
+        </div>
+
+        <div class="galerie-item" data-category="verrines">
+          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400" alt="Verrines cocktail" loading="lazy" />
+          <div class="galerie-item-overlay" onclick="openLightbox(this.querySelector('img').src.replace('w=400','w=1200'))"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LIGHTBOX ===== -->
+  <div id="lightbox" class="lightbox">
+    <button class="lightbox-close">✕</button>
+    <img id="lightboxImg" alt="Image agrandie" />
+  </div>
+
+  <!-- Footer injected via JS -->
+  <div id="footer"></div>
+
+  <!-- Main JS -->
+  <script src="js/main.js"></script>
+  <script src="js/galerie.js"></script>
+  <script>
+    document.getElementById('navbar').innerHTML = getNavbar('galerie');
+    document.getElementById('footer').innerHTML = getFooter();
+  </script>
+
+</body>
+</html>
