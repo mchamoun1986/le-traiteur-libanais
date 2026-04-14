@@ -205,21 +205,21 @@
             </div>
           </div>
 
-          <!-- Phone -->
+          <!-- Devis -->
           <div class="contact-info-item">
-            <div class="contact-info-icon">📞</div>
+            <div class="contact-info-icon">📝</div>
             <div>
-              <h3>Téléphone</h3>
-              <p><a href="tel:+33472000000">04 72 00 00 00</a></p>
+              <h3>Devis en ligne</h3>
+              <p><a href="devis.html">Simuler un devis gratuit</a></p>
             </div>
           </div>
 
-          <!-- Email -->
+          <!-- Message -->
           <div class="contact-info-item">
             <div class="contact-info-icon">✉️</div>
             <div>
-              <h3>Email</h3>
-              <p><a href="mailto:contact@letraiteurlibanais.com">contact@letraiteurlibanais.com</a></p>
+              <h3>Nous écrire</h3>
+              <p>Utilisez le formulaire ci-contre</p>
             </div>
           </div>
 
@@ -316,13 +316,8 @@
         return;
       }
 
-      // Build mailto link
-      const subject = `Demande de devis - ${eventType || 'Non spécifié'}`;
-      const body = `Nom: ${name}\nEmail: ${email}\nTéléphone: ${phone}\nType d'événement: ${eventType || 'Non spécifié'}\n\nMessage:\n${message}`;
-      const mailtoLink = `mailto:contact@letraiteurlibanais.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-      // Open mailto
-      window.location.href = mailtoLink;
+      alert('Merci pour votre message ! Nous vous recontacterons très bientôt.');
+      return;
     }
   </script>
 
