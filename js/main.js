@@ -7,6 +7,16 @@ function getNavbar(activePage) {
       <a href="index.html" class="nav-logo"><span>LE TRAITEUR</span> LIBANAIS</a>
       <ul class="nav-links">
         <li><a href="index.html" class="${activePage === 'accueil' ? 'active' : ''}">Accueil</a></li>
+        <li class="nav-dropdown">
+          <a href="traiteur-lyon.html" class="${['traiteur-lyon','traiteur-entreprise','traiteur-anniversaire','traiteur-cocktail','plateau-repas'].includes(activePage) ? 'active' : ''}">Services ▾</a>
+          <ul class="nav-dropdown-menu">
+            <li><a href="traiteur-lyon.html">Traiteur Lyon</a></li>
+            <li><a href="traiteur-entreprise-lyon.html">Entreprises</a></li>
+            <li><a href="traiteur-anniversaire-lyon.html">Anniversaires</a></li>
+            <li><a href="traiteur-cocktail-lyon.html">Cocktails &amp; Pots</a></li>
+            <li><a href="plateau-repas-lyon.html">Plateaux Repas</a></li>
+          </ul>
+        </li>
         <li><a href="formules.html" class="${activePage === 'formules' ? 'active' : ''}">Formules</a></li>
         <li><a href="devis.html" class="${activePage === 'devis' ? 'active' : ''}">Devis</a></li>
         <li><a href="galerie.html" class="${activePage === 'galerie' ? 'active' : ''}">Galerie</a></li>
@@ -21,6 +31,11 @@ function getNavbar(activePage) {
   </nav>
   <div class="nav-mobile" id="navMobile">
     <a href="index.html">Accueil</a>
+    <a href="traiteur-lyon.html">Traiteur Lyon</a>
+    <a href="traiteur-entreprise-lyon.html">Traiteur Entreprises</a>
+    <a href="traiteur-anniversaire-lyon.html">Traiteur Anniversaires</a>
+    <a href="traiteur-cocktail-lyon.html">Cocktails &amp; Pots</a>
+    <a href="plateau-repas-lyon.html">Plateaux Repas</a>
     <a href="formules.html">Nos Formules</a>
     <a href="devis.html">Simulateur de Devis</a>
     <a href="galerie.html">Galerie</a>
