@@ -2,16 +2,18 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact — Le Traiteur Libanais</title>
-  <meta name="description" content="Contactez Le Traiteur Libanais à Lyon pour vos événements. Mariage, anniversaire, corporate ou cocktail — Nous répondons sous 24h." />
+  <title>Contact — Demande de Devis Traiteur Lyon | Le Traiteur Libanais</title>
+  <meta name="description" content="Contactez Le Traiteur Libanais à Lyon. Demande de devis pour entreprises, anniversaires, cocktails. Réponse sous 24h." />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Contact — Le Traiteur Libanais" />
   <meta property="og:description" content="Contactez Le Traiteur Libanais à Lyon pour vos événements. Mariage, anniversaire, corporate ou cocktail — Nous répondons sous 24h." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://letraiteurlibanais.com/contact.html" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:site_name" content="Le Traiteur Libanais" />
+  <link rel="canonical" href="https://letraiteurlibanais.com/contact.html" />
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/style.css" />
@@ -203,21 +205,21 @@
             </div>
           </div>
 
-          <!-- Phone -->
+          <!-- Devis -->
           <div class="contact-info-item">
-            <div class="contact-info-icon">📞</div>
+            <div class="contact-info-icon">📝</div>
             <div>
-              <h3>Téléphone</h3>
-              <p><a href="tel:+33472000000">04 72 00 00 00</a></p>
+              <h3>Devis en ligne</h3>
+              <p><a href="devis.html">Simuler un devis gratuit</a></p>
             </div>
           </div>
 
-          <!-- Email -->
+          <!-- Message -->
           <div class="contact-info-item">
             <div class="contact-info-icon">✉️</div>
             <div>
-              <h3>Email</h3>
-              <p><a href="mailto:contact@letraiteurlibanais.com">contact@letraiteurlibanais.com</a></p>
+              <h3>Nous écrire</h3>
+              <p>Utilisez le formulaire ci-contre</p>
             </div>
           </div>
 
@@ -263,19 +265,35 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "FoodEstablishment",
-    "name": "Le Traiteur Libanais",
-    "description": "Traiteur libanais d'exception à Lyon",
-    "url": "https://letraiteurlibanais.com",
-    "telephone": "+33472000000",
-    "email": "contact@letraiteurlibanais.com",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Lyon",
-      "addressCountry": "FR"
-    },
-    "servesCuisine": "Lebanese",
-    "priceRange": "€€-€€€"
+    "@type": "ContactPage",
+    "name": "Contact — Le Traiteur Libanais",
+    "url": "https://letraiteurlibanais.com/contact.html",
+    "mainEntity": {
+      "@type": "FoodEstablishment",
+      "name": "Le Traiteur Libanais",
+      "url": "https://letraiteurlibanais.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Lyon",
+        "addressRegion": "Auvergne-Rhône-Alpes",
+        "addressCountry": "FR"
+      },
+      "areaServed": [
+        {"@type": "City", "name": "Lyon"},
+        {"@type": "City", "name": "Villeurbanne"},
+        {"@type": "City", "name": "Caluire-et-Cuire"}
+      ]
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://letraiteurlibanais.com/"},
+      {"@type": "ListItem", "position": 2, "name": "Contact", "item": "https://letraiteurlibanais.com/contact.html"}
+    ]
   }
   </script>
 
@@ -298,13 +316,8 @@
         return;
       }
 
-      // Build mailto link
-      const subject = `Demande de devis - ${eventType || 'Non spécifié'}`;
-      const body = `Nom: ${name}\nEmail: ${email}\nTéléphone: ${phone}\nType d'événement: ${eventType || 'Non spécifié'}\n\nMessage:\n${message}`;
-      const mailtoLink = `mailto:contact@letraiteurlibanais.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-      // Open mailto
-      window.location.href = mailtoLink;
+      alert('Merci pour votre message ! Nous vous recontacterons très bientôt.');
+      return;
     }
   </script>
 

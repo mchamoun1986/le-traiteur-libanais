@@ -70,3 +70,39 @@
 .floating-phone { display: none; position: fixed; bottom: 24px; left: 24px; width: 56px; height: 56px; background: var(--gold); border-radius: 50%; align-items: center; justify-content: center; box-shadow: var(--shadow-md); z-index: 900; }
 .floating-phone svg { width: 24px; height: 24px; fill: var(--bg-primary); }
 @media (max-width: 768px) { .floating-phone { display: flex; } }
+
+/* ===== NAV DROPDOWN ===== */
+.nav-dropdown {
+  position: relative;
+}
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--bg-secondary);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 4px;
+  min-width: 200px;
+  padding: 0.5rem 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-md);
+  list-style: none;
+}
+.nav-dropdown:hover .nav-dropdown-menu {
+  display: block;
+}
+.nav-dropdown-menu li {
+  list-style: none;
+}
+.nav-dropdown-menu a {
+  display: block;
+  padding: 0.6rem 1.2rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  transition: background var(--transition-fast);
+}
+.nav-dropdown-menu a:hover {
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--gold);
+}
