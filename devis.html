@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Devis Gratuit Traiteur Lyon — Simulateur en Ligne | Le Traiteur Libanais</title>
-  <meta name="description" content="Simulez votre devis traiteur en ligne en 5 étapes. Mezzés, buffets, plateaux repas pour vos événements à Lyon. Réponse sous 24h, commande 1 semaine à l'avance.">
+  <meta name="description" content="Simulez votre devis traiteur en ligne en 6 étapes. Formules S/M/L, mezzés, buffets, plateaux repas pour vos événements à Lyon. Réponse sous 24h.">
   <meta property="og:title" content="Simulateur de Devis — Le Traiteur Libanais">
-  <meta property="og:description" content="Créez votre devis personnalisé en 5 étapes pour votre événement à Lyon. Cuisine libanaise authentique, livraison et service sur place.">
+  <meta property="og:description" content="Créez votre devis personnalisé en 6 étapes pour votre événement à Lyon. Cuisine libanaise authentique, livraison et service sur place.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://images.unsplash.com/photo-1555244162-803834f70033?w=1200">
   <meta property="og:url" content="https://letraiteurlibanais.com/devis.html">
@@ -34,18 +34,22 @@
       </div>
       <div class="wizard-step-indicator" id="step-ind-2">
         <div class="wizard-step-dot">2</div>
-        <div class="wizard-step-label">Formules</div>
+        <div class="wizard-step-label">Personnes</div>
       </div>
       <div class="wizard-step-indicator" id="step-ind-3">
         <div class="wizard-step-dot">3</div>
-        <div class="wizard-step-label">Options</div>
+        <div class="wizard-step-label">Style</div>
       </div>
       <div class="wizard-step-indicator" id="step-ind-4">
         <div class="wizard-step-dot">4</div>
-        <div class="wizard-step-label">Détails</div>
+        <div class="wizard-step-label">Formule</div>
       </div>
       <div class="wizard-step-indicator" id="step-ind-5">
         <div class="wizard-step-dot">5</div>
+        <div class="wizard-step-label">Extras</div>
+      </div>
+      <div class="wizard-step-indicator" id="step-ind-6">
+        <div class="wizard-step-dot">6</div>
         <div class="wizard-step-label">Récap</div>
       </div>
     </div>
@@ -53,201 +57,150 @@
     <!-- Panel 1: Event Type -->
     <div class="wizard-panel active" id="panel-1">
       <h2 class="wizard-title">Quel est votre événement ?</h2>
-      <p class="wizard-subtitle">Sélectionnez le type d'événement</p>
-
-      <div class="event-grid">
-        <div class="event-card" onclick="selectEvent('mariage', this)">
-          <div class="event-card-icon">💍</div>
-          <div class="event-card-label">Mariage</div>
-        </div>
-        <div class="event-card" onclick="selectEvent('anniversaire', this)">
-          <div class="event-card-icon">🎂</div>
-          <div class="event-card-label">Anniversaire</div>
-        </div>
-        <div class="event-card" onclick="selectEvent('corporate', this)">
-          <div class="event-card-icon">💼</div>
-          <div class="event-card-label">Corporate</div>
-        </div>
-        <div class="event-card" onclick="selectEvent('cocktail', this)">
-          <div class="event-card-icon">🍸</div>
-          <div class="event-card-label">Cocktail</div>
-        </div>
-        <div class="event-card" onclick="selectEvent('prive', this)">
-          <div class="event-card-icon">👨‍👩‍👧‍👦</div>
-          <div class="event-card-label">Privé / Famille</div>
-        </div>
-        <div class="event-card" onclick="selectEvent('autre', this)">
-          <div class="event-card-icon">✨</div>
-          <div class="event-card-label">Autre</div>
-        </div>
-      </div>
-
+      <p class="wizard-subtitle">Sélectionnez le type d'événement pour personnaliser votre devis</p>
+      <div class="event-grid" id="eventGrid"></div>
       <div class="wizard-nav" style="justify-content:flex-end;">
-        <button class="btn btn-gold" onclick="nextStep()">Suivant →</button>
+        <button class="btn btn-gold" onclick="nextStep()">Suivant &rarr;</button>
       </div>
     </div>
 
-    <!-- Panel 2: Menu Selection -->
+    <!-- Panel 2: Number of Persons -->
     <div class="wizard-panel" id="panel-2">
-      <h2 class="wizard-title">Composez votre menu</h2>
-      <p class="wizard-subtitle">Sélectionnez vos formules et ajustez les quantités</p>
-
-      <div id="menuItems"></div>
-
-      <div class="wizard-nav">
-        <button class="btn btn-outline" onclick="prevStep()">← Précédent</button>
-        <button class="btn btn-gold" onclick="nextStep()">Suivant →</button>
+      <h2 class="wizard-title">Combien d'invités ?</h2>
+      <p class="wizard-subtitle">Ajustez le nombre de personnes pour votre événement</p>
+      <div class="dv2-persons-display" id="personsDisplay">30</div>
+      <div class="dv2-persons-controls">
+        <div class="range-slider">
+          <input type="range" id="personsSlider" min="10" max="500" value="30" oninput="updatePersons(this.value)">
+          <div style="display:flex;justify-content:space-between;margin-top:var(--space-xs);">
+            <span style="color:var(--text-muted);font-size:0.85rem;">10</span>
+            <span style="color:var(--text-muted);font-size:0.85rem;">500</span>
+          </div>
+        </div>
+        <div class="dv2-persons-input-wrap">
+          <label style="color:var(--text-secondary);font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;">Nombre exact</label>
+          <input type="number" id="personsInput" min="10" max="500" value="30" class="dv2-input" oninput="updatePersonsFromInput(this.value)">
+        </div>
       </div>
-
-      <div class="live-price">
-        <span class="live-price-label">Estimation :</span>
-        <span class="live-price-amount" id="livePrice">0 €</span>
+      <p style="text-align:center;color:var(--text-secondary);font-size:0.9rem;margin-top:var(--space-md);">personnes</p>
+      <div class="wizard-nav">
+        <button class="btn btn-outline" onclick="prevStep()">&larr; Précédent</button>
+        <button class="btn btn-gold" onclick="nextStep()">Suivant &rarr;</button>
       </div>
     </div>
 
-    <!-- Panel 3: Dietary Options -->
+    <!-- Panel 3: Presentation Style -->
     <div class="wizard-panel" id="panel-3">
-      <h2 class="wizard-title">Options alimentaires</h2>
-      <p class="wizard-subtitle">Indiquez vos contraintes alimentaires</p>
-
-      <div class="option-checkbox" onclick="toggleOption('vegetarien', this)">
-        <div class="option-checkmark">✓</div>
-        <span>🥬 Végétarien</span>
-      </div>
-      <div class="option-checkbox" onclick="toggleOption('vegan', this)">
-        <div class="option-checkmark">✓</div>
-        <span>🌱 Vegan</span>
-      </div>
-      <div class="option-checkbox" onclick="toggleOption('glutenfree', this)">
-        <div class="option-checkmark">✓</div>
-        <span>🌾 Sans gluten</span>
-      </div>
-      <div class="option-checkbox checked" onclick="toggleOption('halal', this)">
-        <div class="option-checkmark">✓</div>
-        <span>☪️ Halal</span>
-      </div>
-      <div class="option-checkbox" onclick="toggleOption('sansnoix', this)">
-        <div class="option-checkmark">✓</div>
-        <span>🥜 Sans noix</span>
-      </div>
-
+      <h2 class="wizard-title">Style de présentation</h2>
+      <p class="wizard-subtitle">Comment souhaitez-vous servir vos invités ?</p>
+      <div class="dv2-style-grid" id="styleGrid"></div>
       <div class="wizard-nav">
-        <button class="btn btn-outline" onclick="prevStep()">← Précédent</button>
-        <button class="btn btn-gold" onclick="nextStep()">Suivant →</button>
+        <button class="btn btn-outline" onclick="prevStep()">&larr; Précédent</button>
+        <button class="btn btn-gold" onclick="nextStep()">Suivant &rarr;</button>
       </div>
     </div>
 
-    <!-- Panel 4: Logistics -->
+    <!-- Panel 4: Formula + Item Selection -->
     <div class="wizard-panel" id="panel-4">
-      <h2 class="wizard-title">Détails de votre événement</h2>
-      <p class="wizard-subtitle">Précisez les informations pratiques</p>
-
-      <div class="range-value" id="personsValue">50</div>
-      <div class="range-slider">
-        <input type="range" id="personsSlider" min="10" max="500" value="50"
-               oninput="updatePersons(this.value)">
-        <div style="display:flex;justify-content:space-between;margin-top:var(--space-xs);">
-          <span style="color:var(--text-muted);font-size:0.85rem;">10</span>
-          <span style="color:var(--text-muted);font-size:0.85rem;">500</span>
+      <!-- 4A: Formula Selection -->
+      <div id="panel-4a">
+        <h2 class="wizard-title">Choisissez votre formule</h2>
+        <p class="wizard-subtitle">3 formules adaptées à vos envies et votre budget</p>
+        <div class="dv2-formula-grid" id="formulaGrid"></div>
+        <div class="wizard-nav">
+          <button class="btn btn-outline" onclick="prevStep()">&larr; Précédent</button>
         </div>
       </div>
-      <p style="text-align:center;color:var(--text-secondary);font-size:0.85rem;margin-bottom:var(--space-xl);">personnes</p>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md);margin-bottom:var(--space-md);">
-        <div>
-          <label class="form-label" style="display:block;color:var(--text-secondary);font-size:0.85rem;margin-bottom:var(--space-xs);text-transform:uppercase;letter-spacing:1px;">Date</label>
-          <input type="date" id="eventDate" style="width:100%;padding:0.9rem 1.2rem;background:var(--bg-secondary);border:1px solid rgba(212,175,55,0.2);border-radius:6px;color:var(--cream);font-family:var(--font-body);font-size:0.95rem;box-sizing:border-box;">
+      <!-- 4B: Item Selection -->
+      <div id="panel-4b" style="display:none;">
+        <h2 class="wizard-title">Personnalisez votre menu</h2>
+        <p class="wizard-subtitle">Sélectionnez vos plats par catégorie</p>
+        <!-- Diet filters -->
+        <div class="dv2-filters" id="dietFilters"></div>
+        <!-- Item categories -->
+        <div id="itemSelectionContainer"></div>
+        <div class="wizard-nav">
+          <button class="btn btn-outline" onclick="backToFormula()">&larr; Changer de formule</button>
+          <button class="btn btn-gold" onclick="nextStep()">Suivant &rarr;</button>
         </div>
-        <div>
-          <label class="form-label" style="display:block;color:var(--text-secondary);font-size:0.85rem;margin-bottom:var(--space-xs);text-transform:uppercase;letter-spacing:1px;">Heure</label>
-          <input type="time" id="eventTime" style="width:100%;padding:0.9rem 1.2rem;background:var(--bg-secondary);border:1px solid rgba(212,175,55,0.2);border-radius:6px;color:var(--cream);font-family:var(--font-body);font-size:0.95rem;box-sizing:border-box;">
-        </div>
-      </div>
-
-      <div style="margin-bottom:var(--space-md);">
-        <label class="form-label" style="display:block;color:var(--text-secondary);font-size:0.85rem;margin-bottom:var(--space-xs);text-transform:uppercase;letter-spacing:1px;">Adresse de livraison</label>
-        <input type="text" id="eventAddress" placeholder="Adresse à Lyon..."
-               style="width:100%;padding:0.9rem 1.2rem;background:var(--bg-secondary);border:1px solid rgba(212,175,55,0.2);border-radius:6px;color:var(--cream);font-family:var(--font-body);font-size:0.95rem;box-sizing:border-box;">
-      </div>
-
-      <div class="option-checkbox" onclick="toggleService(this)">
-        <div class="option-checkmark">✓</div>
-        <span>🍽️ Service sur place (+5 € / pers)</span>
-      </div>
-
-      <div class="wizard-nav">
-        <button class="btn btn-outline" onclick="prevStep()">← Précédent</button>
-        <button class="btn btn-gold" onclick="nextStep()">Suivant →</button>
       </div>
     </div>
 
-    <!-- Panel 5: Recap -->
+    <!-- Panel 5: Beverages & Desserts -->
     <div class="wizard-panel" id="panel-5">
+      <h2 class="wizard-title">Boissons & Desserts</h2>
+      <p class="wizard-subtitle">Complétez votre menu avec boissons et douceurs</p>
+      <div id="beveragesContainer"></div>
+      <div id="dessertsContainer"></div>
+      <div class="wizard-nav">
+        <button class="btn btn-outline" onclick="prevStep()">&larr; Précédent</button>
+        <button class="btn btn-gold" onclick="nextStep()">Suivant &rarr;</button>
+      </div>
+    </div>
+
+    <!-- Panel 6: Recap -->
+    <div class="wizard-panel" id="panel-6">
       <h2 class="wizard-title">Récapitulatif de votre devis</h2>
       <p class="wizard-subtitle">Vérifiez votre sélection et envoyez votre demande</p>
 
-      <div class="recap-section">
-        <div class="recap-row">
-          <span class="recap-label">Événement</span>
-          <span class="recap-value" id="recapEvent">—</span>
-        </div>
-        <div class="recap-row">
-          <span class="recap-label">Personnes</span>
-          <span class="recap-value" id="recapPersons">—</span>
-        </div>
-        <div class="recap-row">
-          <span class="recap-label">Date</span>
-          <span class="recap-value" id="recapDate">—</span>
-        </div>
-        <div class="recap-row">
-          <span class="recap-label">Heure</span>
-          <span class="recap-value" id="recapTime">—</span>
-        </div>
-        <div class="recap-row">
-          <span class="recap-label">Adresse</span>
-          <span class="recap-value" id="recapAddress">—</span>
-        </div>
-      </div>
-
-      <div class="recap-section">
-        <div id="recapItems"></div>
-      </div>
-
-      <div class="recap-total">
-        <span class="recap-total-label">Total estimé</span>
-        <span class="recap-total-amount" id="recapTotal">0 €</span>
-      </div>
+      <div class="recap-section" id="recapEventSection"></div>
+      <div class="recap-section" id="recapMenuSection"></div>
+      <div class="recap-section" id="recapExtrasSection"></div>
+      <div class="recap-total" id="recapTotalSection"></div>
 
       <div class="recap-section" style="margin-top:var(--space-xl);">
         <h3 style="color:var(--gold);font-family:var(--font-heading);margin-bottom:var(--space-lg);font-size:1.1rem;">Vos coordonnées</h3>
-        <div style="margin-bottom:var(--space-md);">
-          <label style="display:block;color:var(--text-secondary);font-size:0.85rem;margin-bottom:var(--space-xs);text-transform:uppercase;letter-spacing:1px;">Nom complet</label>
-          <input type="text" id="contactName" placeholder="Votre nom..."
-                 style="width:100%;padding:0.9rem 1.2rem;background:var(--bg-primary);border:1px solid rgba(212,175,55,0.2);border-radius:6px;color:var(--cream);font-family:var(--font-body);font-size:0.95rem;box-sizing:border-box;">
+        <div class="dv2-form-grid">
+          <div class="dv2-form-group">
+            <label class="dv2-label">Nom complet *</label>
+            <input type="text" id="contactName" placeholder="Votre nom..." class="dv2-input">
+          </div>
+          <div class="dv2-form-group">
+            <label class="dv2-label">Email *</label>
+            <input type="email" id="contactEmail" placeholder="votre@email.com" class="dv2-input">
+          </div>
+          <div class="dv2-form-group">
+            <label class="dv2-label">Téléphone</label>
+            <input type="tel" id="contactPhone" placeholder="+33 6 00 00 00 00" class="dv2-input">
+          </div>
+          <div class="dv2-form-group">
+            <label class="dv2-label">Message (optionnel)</label>
+            <textarea id="contactMessage" placeholder="Précisions, allergies, demandes spéciales..." class="dv2-input dv2-textarea"></textarea>
+          </div>
         </div>
-        <div style="margin-bottom:var(--space-md);">
-          <label style="display:block;color:var(--text-secondary);font-size:0.85rem;margin-bottom:var(--space-xs);text-transform:uppercase;letter-spacing:1px;">Email</label>
-          <input type="email" id="contactEmail" placeholder="votre@email.com"
-                 style="width:100%;padding:0.9rem 1.2rem;background:var(--bg-primary);border:1px solid rgba(212,175,55,0.2);border-radius:6px;color:var(--cream);font-family:var(--font-body);font-size:0.95rem;box-sizing:border-box;">
-        </div>
-        <div style="margin-bottom:var(--space-md);">
-          <label style="display:block;color:var(--text-secondary);font-size:0.85rem;margin-bottom:var(--space-xs);text-transform:uppercase;letter-spacing:1px;">Téléphone</label>
-          <input type="tel" id="contactPhone" placeholder="+33 6 00 00 00 00"
-                 style="width:100%;padding:0.9rem 1.2rem;background:var(--bg-primary);border:1px solid rgba(212,175,55,0.2);border-radius:6px;color:var(--cream);font-family:var(--font-body);font-size:0.95rem;box-sizing:border-box;">
+        <div style="margin-top:var(--space-md);">
+          <div class="dv2-form-grid" style="grid-template-columns:1fr 1fr;">
+            <div class="dv2-form-group">
+              <label class="dv2-label">Date de l'événement</label>
+              <input type="date" id="eventDate" class="dv2-input">
+            </div>
+            <div class="dv2-form-group">
+              <label class="dv2-label">Heure souhaitée</label>
+              <input type="time" id="eventTime" class="dv2-input">
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="wizard-nav">
-        <button class="btn btn-outline" onclick="prevStep()">← Précédent</button>
-        <div style="display:flex;gap:var(--space-md);">
-          <button class="btn btn-outline" onclick="downloadPDF()">⬇ Télécharger PDF</button>
-          <button class="btn btn-gold" onclick="sendDevis()">Envoyer ma demande ✉</button>
+        <button class="btn btn-outline" onclick="prevStep()">&larr; Précédent</button>
+        <div style="display:flex;gap:var(--space-md);flex-wrap:wrap;">
+          <button class="btn btn-outline" onclick="downloadPDF()">&#11015; Télécharger PDF</button>
+          <button class="btn btn-gold" onclick="sendDevis()">Envoyer ma demande</button>
         </div>
       </div>
     </div>
 
   </div><!-- /container -->
 </div><!-- /wizard -->
+
+<!-- Sticky Price Bar -->
+<div class="dv2-price-bar" id="priceBar" style="display:none;">
+  <div class="container dv2-price-bar-inner">
+    <span class="dv2-price-bar-detail">Prix/pers : <strong id="pricePerPerson">0&euro;</strong></span>
+    <span class="dv2-price-bar-total">Total : <strong id="priceTotal">0&euro;</strong> <span id="pricePersonsLabel">(30 pers.)</span></span>
+  </div>
+</div>
 
 <div id="footer"></div>
 

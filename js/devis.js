@@ -1,57 +1,95 @@
-/* js/devis.js — 5-step quote wizard */
+/* js/devis.js — 6-step quote wizard v2 */
 
 /* ============================================================
-   MENU DATA
+   DATA
    ============================================================ */
-const MENU_DATA = {
-  mezzes: {
-    label: 'Mezzés',
-    items: [
-      { id: 'm1', name: 'Houmous', price: 4, unit: '/pers', img: 'https://images.unsplash.com/photo-1577805947697-89e18249d767?w=200', desc: 'Pois chiches, tahini, citron', badges: ['veggie', 'vegan'] },
-      { id: 'm2', name: 'Taboulé', price: 4.5, unit: '/pers', img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200', desc: 'Persil, boulgour, tomates, menthe', badges: ['veggie', 'vegan'] },
-      { id: 'm3', name: 'Fattouch', price: 5, unit: '/pers', img: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=200', desc: 'Salade croquante, pain grillé, sumac', badges: ['veggie'] },
-      { id: 'm4', name: 'Kebbé', price: 5.5, unit: '/pers', img: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=200', desc: 'Boulghour, viande, noix de pin', badges: [] },
-      { id: 'm5', name: 'Falafel', price: 4, unit: '/pers', img: 'https://images.unsplash.com/photo-1593001874117-c99c800e3eb7?w=200', desc: 'Pois chiches, herbes, épices', badges: ['veggie', 'vegan'] },
-      { id: 'm6', name: 'Baba Ghanouj', price: 4.5, unit: '/pers', img: 'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=200', desc: 'Aubergine fumée, tahini, ail', badges: ['veggie', 'vegan'] }
-    ]
-  },
-  verrines: {
-    label: 'Verrines',
-    items: [
-      { id: 'v1', name: 'Houmous Pistache', price: 3.5, unit: '/pièce', img: 'https://images.unsplash.com/photo-1541014741259-de529411b96a?w=200', desc: 'Houmous crémeux, éclats de pistache', badges: ['veggie', 'vegan'] },
-      { id: 'v2', name: 'Taboulé Quinoa', price: 3.5, unit: '/pièce', img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200', desc: 'Quinoa, herbes fraîches, grenade', badges: ['veggie', 'vegan', 'glutenfree'] },
-      { id: 'v3', name: 'Labneh Grenade', price: 3.5, unit: '/pièce', img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=200', desc: 'Labneh onctueux, graines de grenade', badges: ['veggie'] },
-      { id: 'v4', name: 'Mouhamara', price: 3.5, unit: '/pièce', img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200', desc: 'Poivrons rouges, noix, mélasse', badges: ['veggie', 'vegan'] },
-      { id: 'v5', name: 'Baba Ghanouj Truffe', price: 3.5, unit: '/pièce', img: 'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=200', desc: 'Aubergine fumée, huile de truffe', badges: ['veggie', 'vegan'] },
-      { id: 'v6', name: 'Kebbé Nayyeh', price: 3.5, unit: '/pièce', img: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=200', desc: 'Viande crue, boulgour fin, épices', badges: [] }
-    ]
-  },
-  bowls: {
-    label: 'Bowls',
-    items: [
-      { id: 'b1', name: 'Bowl Shawarma', price: 14, unit: '/pers', img: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=200', desc: 'Poulet mariné, riz, pickles, ail', badges: [] },
-      { id: 'b2', name: 'Bowl Falafel Veggie', price: 12, unit: '/pers', img: 'https://images.unsplash.com/photo-1593001874117-c99c800e3eb7?w=200', desc: 'Falafel, houmous, légumes grillés', badges: ['veggie', 'vegan'] },
-      { id: 'b3', name: 'Bowl Grillades Mixtes', price: 16, unit: '/pers', img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=200', desc: 'Brochettes mixtes, riz aux vermicelles', badges: [] },
-      { id: 'b4', name: 'Bowl Kebbé', price: 14, unit: '/pers', img: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=200', desc: 'Kebbé, taboulé, labneh', badges: [] }
-    ]
-  },
-  lunchboxes: {
-    label: 'Lunch Boxes',
-    items: [
-      { id: 'l1', name: 'Lunch Box Standard', price: 16, unit: '/pers', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200', desc: '2 mezzés + 1 grillades + riz + dessert', badges: [] },
-      { id: 'l2', name: 'Lunch Box Premium', price: 22, unit: '/pers', img: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=200', desc: '3 mezzés + grillades mixtes + riz + 2 desserts', badges: [] },
-      { id: 'l3', name: 'Lunch Box Veggie', price: 14, unit: '/pers', img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200', desc: '3 mezzés végé + falafel + riz + dessert', badges: ['veggie'] }
-    ]
-  },
-  buffets: {
-    label: 'Buffets',
-    items: [
-      { id: 'f1', name: 'Buffet Essentiel', price: 25, unit: '/pers', img: 'https://images.unsplash.com/photo-1555244162-803834f70033?w=200', desc: '4 mezzés, 2 grillades, riz, 2 salades, pain, 1 dessert. Min. 20 pers.', badges: [], min: 20 },
-      { id: 'f2', name: 'Buffet Premium', price: 35, unit: '/pers', img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200', desc: '6 mezzés, 3 grillades, riz, 3 salades, pain, fromages, 2 desserts. Min. 20 pers.', badges: [], min: 20 },
-      { id: 'f3', name: 'Buffet Prestige', price: 50, unit: '/pers', img: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200', desc: '8 mezzés, grillades royales, riz, salades, fromages, fruits, 3 desserts, boissons. Min. 20 pers.', badges: [], min: 20 }
-    ]
-  }
+const EVENT_TYPES = [
+  { id: 'mariage', label: 'Mariage', icon: '\uD83D\uDC8D' },
+  { id: 'anniversaire', label: 'Anniversaire', icon: '\uD83C\uDF82' },
+  { id: 'corporate', label: 'Corporate', icon: '\uD83D\uDCBC' },
+  { id: 'cocktail', label: 'Cocktail', icon: '\uD83C\uDF78' },
+  { id: 'prive', label: 'Privé / Famille', icon: '\uD83D\uDC68\u200D\uD83D\uDC69\u200D\uD83D\uDC67\u200D\uD83D\uDC66' },
+  { id: 'autre', label: 'Autre', icon: '\u2728' }
+];
+
+const STYLE_TYPES = [
+  { id: 'plateau', label: 'Plateau individuel', icon: '\uD83C\uDF71', desc: 'Service individuel élégant, idéal repas assis' },
+  { id: 'buffet', label: 'Buffet', icon: '\uD83C\uDF7D\uFE0F', desc: 'Présentation généreuse en libre-service' },
+  { id: 'cocktail', label: 'Cocktail / Verrines', icon: '\uD83E\uDD42', desc: 'Bouchées et verrines raffinées' },
+  { id: 'bowl', label: 'Bowl', icon: '\uD83E\uDD57', desc: 'Bowls individuels complets et colorés' },
+  { id: 'lunchbox', label: 'Lunch Box', icon: '\uD83D\uDCE6', desc: 'Boîtes repas pratiques à emporter' }
+];
+
+const FORMULAS = {
+  S: { label: 'Essentiel', price: 15, mezzes: 3, proteins: 1, bases: 1, desserts: 0, beveragesIncluded: false },
+  M: { label: 'Généreux', price: 22, mezzes: 5, proteins: 2, bases: 2, desserts: 1, beveragesIncluded: false, popular: true },
+  L: { label: 'Prestige', price: 32, mezzes: 7, proteins: 3, bases: 3, desserts: 2, beveragesIncluded: true }
 };
+
+const MEZZES = [
+  { id: 'mz1', name: 'Houmous', desc: 'Pois chiches, tahini, citron', badges: ['veggie','vegan','halal','glutenfree'] },
+  { id: 'mz2', name: 'Taboulé', desc: 'Persil, boulgour, tomates, menthe', badges: ['veggie','vegan','halal'] },
+  { id: 'mz3', name: 'Fattouch', desc: 'Salade croquante, pain grillé, sumac', badges: ['veggie','halal'] },
+  { id: 'mz4', name: 'Falafel', desc: 'Pois chiches, herbes, épices', badges: ['veggie','vegan','halal','glutenfree'] },
+  { id: 'mz5', name: 'Baba Ghanouj', desc: 'Aubergine fumée, tahini', badges: ['veggie','vegan','halal','glutenfree'] },
+  { id: 'mz6', name: 'Kebbé', desc: 'Boulgour, viande, noix de pin', badges: ['halal'], hasNuts: true },
+  { id: 'mz7', name: 'Labneh', desc: 'Fromage frais, huile d\'olive, menthe', badges: ['veggie','halal','glutenfree'] },
+  { id: 'mz8', name: 'Moutabal', desc: 'Aubergine grillée, tahini', badges: ['veggie','vegan','halal','glutenfree'] },
+  { id: 'mz9', name: 'Feuilles de vigne', desc: 'Feuilles de vigne farcies au riz', badges: ['veggie','vegan','halal'] },
+  { id: 'mz10', name: 'Sambousik Fromage', desc: 'Chausson frit au fromage', badges: ['veggie','halal'] },
+  { id: 'mz11', name: 'Fatayer Épinards', desc: 'Mini pie épinards, citron, sumac', badges: ['veggie','vegan','halal'] }
+];
+
+const PROTEINS = [
+  { id: 'pr1', name: 'Poulet Shawarma', desc: 'Poulet mariné, épices, ail', badges: ['halal'] },
+  { id: 'pr2', name: 'Kafta Boeuf/Agneau', desc: 'Viande hachée, persil, oignon', badges: ['halal'] },
+  { id: 'pr3', name: 'Brochettes Mixtes', desc: 'Poulet + kafta grillés', badges: ['halal'] },
+  { id: 'pr4', name: 'Falafel Protéine', desc: 'Croquettes de pois chiches', badges: ['veggie','vegan','halal','glutenfree'] },
+  { id: 'pr5', name: 'Chou-fleur Rôti', desc: 'Zaatar, curcuma', badges: ['veggie','vegan','halal','glutenfree'] }
+];
+
+const BASES = [
+  { id: 'bs1', name: 'Riz aux vermicelles', desc: 'Riz, vermicelles dorés', badges: ['halal'] },
+  { id: 'bs2', name: 'Boulgour', desc: 'Boulgour nature', badges: ['veggie','vegan','halal'] },
+  { id: 'bs3', name: 'Salade verte', desc: 'Laitue, concombre, tomates', badges: ['veggie','vegan','halal','glutenfree'] },
+  { id: 'bs4', name: 'Riz safrané', desc: 'Riz parfumé au safran', badges: ['veggie','halal'] }
+];
+
+const BEVERAGES = [
+  { id: 'bv1', name: 'Eau plate & gazeuse', price: 2 },
+  { id: 'bv2', name: 'Jus de fruits assortis', price: 3 },
+  { id: 'bv3', name: 'Sodas', price: 3 },
+  { id: 'bv4', name: 'Ayran', price: 3.5 },
+  { id: 'bv5', name: 'Jallab', price: 4 },
+  { id: 'bv6', name: 'Limonade menthe', price: 3.5 },
+  { id: 'bv7', name: 'Café turc / thé menthe', price: 2.5 },
+  { id: 'bv8', name: 'Pack Boissons Complet', price: 6 }
+];
+
+const DESSERTS = [
+  { id: 'ds1', name: 'Baklawa assortis', price: 4 },
+  { id: 'ds2', name: 'Maamoul', price: 3.5 },
+  { id: 'ds3', name: 'Knefeh', price: 5 },
+  { id: 'ds4', name: 'Mouhalabieh', price: 4 },
+  { id: 'ds5', name: 'Fruits de saison', price: 3 },
+  { id: 'ds6', name: 'Plateau Desserts Complet', price: 8 }
+];
+
+const EXTRA_PRICES = { mezzes: 2, proteins: 4, bases: 1.5 };
+
+const BADGE_MAP = {
+  veggie: { label: 'Végétarien', short: 'Végé', color: '#4caf50' },
+  vegan: { label: 'Vegan', short: 'Vegan', color: '#66bb6a' },
+  halal: { label: 'Halal', short: 'Halal', color: '#42a5f5' },
+  glutenfree: { label: 'Sans gluten', short: 'SG', color: '#ffa726' },
+  nutfree: { label: 'Sans noix', short: 'SN', color: '#ef5350' }
+};
+
+const EVENT_LABELS = {};
+EVENT_TYPES.forEach(e => { EVENT_LABELS[e.id] = e.icon + ' ' + e.label; });
+
+const STYLE_LABELS = {};
+STYLE_TYPES.forEach(s => { STYLE_LABELS[s.id] = s.icon + ' ' + s.label; });
 
 /* ============================================================
    STATE
@@ -59,370 +97,553 @@ const MENU_DATA = {
 const state = {
   step: 1,
   eventType: '',
-  selections: {},   // { itemId: { qty, item } }
-  options: { halal: true },
-  persons: 50,
+  persons: 30,
+  style: '',
+  formula: '',
+  subStep: 'a',
+  selectedMezzes: [],
+  selectedProteins: [],
+  selectedBases: [],
+  selectedBeverages: [],
+  selectedDesserts: [],
+  filters: { veggie: false, vegan: false, glutenfree: false, halal: true, nutfree: false },
+  extras: { service: false },
   date: '',
   time: '',
-  address: '',
-  service: false,
-  contact: {}
+  contact: { name: '', email: '', phone: '', message: '' }
 };
 
 /* ============================================================
    NAVIGATION
    ============================================================ */
+const TOTAL_STEPS = 6;
+
 function goToStep(n) {
-  // Hide all panels
   document.querySelectorAll('.wizard-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('panel-' + n).classList.add('active');
 
-  // Update step indicators
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= TOTAL_STEPS; i++) {
     const ind = document.getElementById('step-ind-' + i);
     ind.classList.remove('active', 'done');
-    if (i < n) ind.classList.add('done');
+    if (i < n) { ind.classList.add('done'); ind.querySelector('.wizard-step-dot').textContent = '\u2713'; }
+    else { ind.querySelector('.wizard-step-dot').textContent = i; }
     if (i === n) ind.classList.add('active');
   }
 
-  // Update progress fill (5 steps → 4 gaps)
   const fill = document.getElementById('progressFill');
-  fill.style.width = ((n - 1) / 4 * 100) + '%';
+  fill.style.width = ((n - 1) / (TOTAL_STEPS - 1) * 100) + '%';
 
   state.step = n;
 
-  if (n === 5) {
-    renderRecap();
+  // Show price bar from step 3
+  const priceBar = document.getElementById('priceBar');
+  if (priceBar) priceBar.style.display = n >= 3 ? 'block' : 'none';
+
+  if (n === 4) {
+    if (state.formula && state.subStep === 'b') showPanel4B();
+    else showPanel4A();
   }
+  if (n === 5) renderBeveragesAndDesserts();
+  if (n === 6) renderRecap();
 
-  updateLivePrice();
-
-  // Scroll to top of wizard
+  updatePriceBar();
   document.querySelector('.wizard').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function nextStep() {
-  if (state.step < 5) goToStep(state.step + 1);
+  if (state.step === 1 && !state.eventType) { alert('Veuillez sélectionner un type d\'événement.'); return; }
+  if (state.step === 3 && !state.style) { alert('Veuillez choisir un style de présentation.'); return; }
+  if (state.step === 4) {
+    if (!state.formula) { alert('Veuillez choisir une formule.'); return; }
+    if (state.subStep === 'a') return; // formula cards handle navigation
+  }
+  if (state.step < TOTAL_STEPS) goToStep(state.step + 1);
 }
 
 function prevStep() {
+  if (state.step === 4 && state.subStep === 'b') { backToFormula(); return; }
   if (state.step > 1) goToStep(state.step - 1);
 }
 
 /* ============================================================
-   STEP 1 — EVENT SELECTION
+   STEP 1 — EVENT TYPE
    ============================================================ */
-function selectEvent(type, el) {
+function renderEventGrid() {
+  const grid = document.getElementById('eventGrid');
+  grid.innerHTML = EVENT_TYPES.map(e => `
+    <div class="event-card" data-event="${e.id}" onclick="selectEvent('${e.id}')">
+      <div class="event-card-icon">${e.icon}</div>
+      <div class="event-card-label">${e.label}</div>
+    </div>
+  `).join('');
+}
+
+function selectEvent(type) {
   state.eventType = type;
   document.querySelectorAll('.event-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
+  const el = document.querySelector(`.event-card[data-event="${type}"]`);
+  if (el) el.classList.add('selected');
 }
 
 /* ============================================================
-   STEP 2 — MENU RENDERING
+   STEP 2 — PERSONS
    ============================================================ */
-const CATEGORY_LABELS = {
-  mezzes: 'Mezzés',
-  verrines: 'Verrines',
-  bowls: 'Bowls',
-  lunchboxes: 'Lunch Boxes',
-  buffets: 'Buffets'
-};
+function updatePersons(val) {
+  val = Math.max(10, Math.min(500, parseInt(val, 10) || 10));
+  state.persons = val;
+  document.getElementById('personsDisplay').textContent = val;
+  document.getElementById('personsSlider').value = val;
+  document.getElementById('personsInput').value = val;
+  updatePriceBar();
+}
 
-const BADGE_LABELS = {
-  veggie: '🥬 Végé',
-  vegan: '🌱 Vegan',
-  glutenfree: '🌾 Sans gluten'
-};
+function updatePersonsFromInput(val) {
+  updatePersons(val);
+}
 
-function renderMenuItems() {
-  const container = document.getElementById('menuItems');
-  let html = '';
+/* ============================================================
+   STEP 3 — STYLE
+   ============================================================ */
+function renderStyleGrid() {
+  const grid = document.getElementById('styleGrid');
+  grid.innerHTML = STYLE_TYPES.map(s => `
+    <div class="dv2-style-card" data-style="${s.id}" onclick="selectStyle('${s.id}')">
+      <div class="dv2-style-icon">${s.icon}</div>
+      <div class="dv2-style-label">${s.label}</div>
+      <div class="dv2-style-desc">${s.desc}</div>
+    </div>
+  `).join('');
+}
 
-  for (const [catKey, cat] of Object.entries(MENU_DATA)) {
-    html += `<h3 style="font-family:var(--font-heading);color:var(--gold);font-size:1.3rem;margin:var(--space-xl) 0 var(--space-md);padding-bottom:var(--space-sm);border-bottom:1px solid rgba(212,175,55,0.2);">${cat.label}</h3>`;
+function selectStyle(id) {
+  state.style = id;
+  document.querySelectorAll('.dv2-style-card').forEach(c => c.classList.remove('selected'));
+  const el = document.querySelector(`.dv2-style-card[data-style="${id}"]`);
+  if (el) el.classList.add('selected');
+}
 
-    for (const item of cat.items) {
-      const sel = state.selections[item.id];
-      const qty = sel ? sel.qty : 0;
-      const isSelected = qty > 0;
+/* ============================================================
+   STEP 4A — FORMULA SELECTION
+   ============================================================ */
+function showPanel4A() {
+  state.subStep = 'a';
+  document.getElementById('panel-4a').style.display = 'block';
+  document.getElementById('panel-4b').style.display = 'none';
+  renderFormulaGrid();
+}
 
-      const badgesHtml = (item.badges || []).map(b =>
-        `<span style="display:inline-block;background:rgba(212,175,55,0.15);color:var(--gold);font-size:0.7rem;padding:2px 6px;border-radius:10px;margin-right:4px;">${BADGE_LABELS[b] || b}</span>`
-      ).join('');
+function renderFormulaGrid() {
+  const grid = document.getElementById('formulaGrid');
+  grid.innerHTML = Object.entries(FORMULAS).map(([key, f]) => {
+    const isSelected = state.formula === key;
+    const popularBadge = f.popular ? '<div class="dv2-formula-badge">\u2B50 Populaire</div>' : '';
+    return `
+    <div class="dv2-formula-card${isSelected ? ' selected' : ''}${f.popular ? ' popular' : ''}" data-formula="${key}" onclick="selectFormula('${key}')">
+      ${popularBadge}
+      <div class="dv2-formula-size">${key}</div>
+      <div class="dv2-formula-name">${f.label}</div>
+      <div class="dv2-formula-price">${f.price}&euro;<span>/pers</span></div>
+      <ul class="dv2-formula-details">
+        <li>${f.mezzes} mezzés</li>
+        <li>${f.proteins} protéine${f.proteins > 1 ? 's' : ''}</li>
+        <li>${f.bases} base${f.bases > 1 ? 's' : ''}</li>
+        ${f.desserts > 0 ? `<li>${f.desserts} dessert${f.desserts > 1 ? 's' : ''}</li>` : ''}
+        ${f.beveragesIncluded ? '<li>Boisson incluse</li>' : ''}
+      </ul>
+      <button class="btn btn-gold dv2-formula-btn">Choisir</button>
+    </div>`;
+  }).join('');
+}
 
-      const minNote = item.min ? `<span style="color:var(--text-muted);font-size:0.75rem;"> (min. ${item.min} pers.)</span>` : '';
+function selectFormula(key) {
+  state.formula = key;
+  // Reset selections when changing formula
+  state.selectedMezzes = [];
+  state.selectedProteins = [];
+  state.selectedBases = [];
+  state.selectedDesserts = [];
+  state.selectedBeverages = [];
+  showPanel4B();
+  updatePriceBar();
+}
 
-      html += `
-        <div class="menu-item${isSelected ? ' selected' : ''}" id="item-${item.id}">
-          <img class="menu-item-img" src="${item.img}" alt="${item.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1555244162-803834f70033?w=200'">
-          <div class="menu-item-info">
-            <div class="menu-item-name">${item.name}${minNote}</div>
-            <div class="menu-item-desc">${item.desc}</div>
-            <div style="margin-top:4px;">${badgesHtml}</div>
-          </div>
-          <div class="menu-item-price">${item.price} €${item.unit}</div>
-          <div class="menu-item-qty">
-            <button onclick="adjustQty('${item.id}', -1)">−</button>
-            <span id="qty-${item.id}">${qty}</span>
-            <button onclick="adjustQty('${item.id}', 1)">+</button>
-          </div>
-        </div>`;
+/* ============================================================
+   STEP 4B — ITEM SELECTION
+   ============================================================ */
+function showPanel4B() {
+  state.subStep = 'b';
+  document.getElementById('panel-4a').style.display = 'none';
+  document.getElementById('panel-4b').style.display = 'block';
+  renderDietFilters();
+  renderItemSelection();
+}
+
+function backToFormula() {
+  showPanel4A();
+}
+
+function renderDietFilters() {
+  const container = document.getElementById('dietFilters');
+  const filters = [
+    { key: 'veggie', label: 'Végétarien' },
+    { key: 'vegan', label: 'Vegan' },
+    { key: 'glutenfree', label: 'Sans gluten' },
+    { key: 'halal', label: 'Halal' },
+    { key: 'nutfree', label: 'Sans noix' }
+  ];
+  container.innerHTML = filters.map(f => `
+    <button class="dv2-filter-pill${state.filters[f.key] ? ' active' : ''}" data-filter="${f.key}" onclick="toggleFilter('${f.key}')">
+      ${f.label}
+    </button>
+  `).join('');
+}
+
+function toggleFilter(key) {
+  state.filters[key] = !state.filters[key];
+  document.querySelectorAll('.dv2-filter-pill').forEach(btn => {
+    if (btn.dataset.filter === key) btn.classList.toggle('active', state.filters[key]);
+  });
+  renderItemSelection();
+}
+
+function itemMatchesFilters(item) {
+  const activeFilters = Object.entries(state.filters).filter(([, v]) => v).map(([k]) => k);
+  if (activeFilters.length === 0) return true;
+  for (const f of activeFilters) {
+    if (f === 'nutfree') {
+      if (item.hasNuts) return false;
+    } else {
+      if (!item.badges.includes(f)) return false;
     }
   }
+  return true;
+}
+
+function renderItemSelection() {
+  const formula = FORMULAS[state.formula];
+  if (!formula) return;
+
+  const container = document.getElementById('itemSelectionContainer');
+  let html = '';
+
+  html += renderCategoryBlock('Mezzés froids', MEZZES, state.selectedMezzes, 'mezzes', formula.mezzes, EXTRA_PRICES.mezzes);
+  html += renderCategoryBlock('Protéines', PROTEINS, state.selectedProteins, 'proteins', formula.proteins, EXTRA_PRICES.proteins);
+  html += renderCategoryBlock('Bases', BASES, state.selectedBases, 'bases', formula.bases, EXTRA_PRICES.bases);
 
   container.innerHTML = html;
 }
 
+function renderCategoryBlock(title, items, selected, category, quota, extraPrice) {
+  const count = selected.length;
+  let html = `
+    <div class="dv2-category">
+      <div class="dv2-category-header">
+        <h3 class="dv2-category-title">${title}</h3>
+        <span class="dv2-category-counter${count >= quota ? ' full' : ''}">${count}/${quota} sélectionnés</span>
+      </div>
+      <p class="dv2-category-hint">Choisissez-en ${quota} — extra : +${extraPrice}\u20AC/pers</p>
+      <div class="dv2-items-list">`;
+
+  for (const item of items) {
+    const isSelected = selected.includes(item.id);
+    const matches = itemMatchesFilters(item);
+    const idx = selected.indexOf(item.id);
+    const isExtra = idx >= quota;
+    const badgesHtml = (item.badges || []).map(b => {
+      const info = BADGE_MAP[b];
+      return info ? `<span class="dv2-badge" style="background:${info.color}22;color:${info.color}">${info.short}</span>` : '';
+    }).join('');
+
+    html += `
+      <div class="dv2-item-row${isSelected ? ' selected' : ''}${!matches ? ' disabled' : ''}" data-item="${item.id}" onclick="${matches ? `toggleItem('${category}','${item.id}')` : ''}">
+        <div class="dv2-item-check">${isSelected ? '\u2713' : ''}</div>
+        <div class="dv2-item-info">
+          <div class="dv2-item-name">${item.name}</div>
+          <div class="dv2-item-desc">${item.desc}</div>
+          <div class="dv2-item-badges">${badgesHtml}</div>
+        </div>
+        <div class="dv2-item-tag">${isSelected ? (isExtra ? `+${extraPrice}\u20AC/pers` : 'inclus') : ''}</div>
+      </div>`;
+  }
+
+  html += '</div></div>';
+  return html;
+}
+
+function toggleItem(category, itemId) {
+  let arr;
+  if (category === 'mezzes') arr = state.selectedMezzes;
+  else if (category === 'proteins') arr = state.selectedProteins;
+  else if (category === 'bases') arr = state.selectedBases;
+  else return;
+
+  const idx = arr.indexOf(itemId);
+  if (idx >= 0) arr.splice(idx, 1);
+  else arr.push(itemId);
+
+  renderItemSelection();
+  updatePriceBar();
+}
+
 /* ============================================================
-   STEP 2 — QTY ADJUSTMENT
+   STEP 5 — BEVERAGES & DESSERTS
    ============================================================ */
-function getItemById(id) {
-  for (const cat of Object.values(MENU_DATA)) {
-    const found = cat.items.find(i => i.id === id);
-    if (found) return found;
+function renderBeveragesAndDesserts() {
+  const formula = FORMULAS[state.formula];
+  if (!formula) return;
+
+  // Beverages
+  const bevContainer = document.getElementById('beveragesContainer');
+  let bevHtml = '<h3 class="dv2-category-title" style="margin-bottom:var(--space-md);">Boissons</h3>';
+  if (formula.beveragesIncluded) {
+    bevHtml += '<p class="dv2-category-hint" style="margin-bottom:var(--space-md);">Formule Prestige : boissons incluses !</p>';
   }
-  return null;
+  bevHtml += '<div class="dv2-items-list">';
+  for (const bev of BEVERAGES) {
+    const isSelected = state.selectedBeverages.includes(bev.id);
+    const isFree = formula.beveragesIncluded;
+    bevHtml += `
+      <div class="dv2-item-row${isSelected ? ' selected' : ''}" data-item="${bev.id}" onclick="toggleBeverage('${bev.id}')">
+        <div class="dv2-item-check">${isSelected ? '\u2713' : ''}</div>
+        <div class="dv2-item-info">
+          <div class="dv2-item-name">${bev.name}</div>
+        </div>
+        <div class="dv2-item-tag">${isFree && isSelected ? 'inclus' : (isSelected ? bev.price + '\u20AC/pers' : bev.price + '\u20AC/pers')}</div>
+      </div>`;
+  }
+  bevHtml += '</div>';
+  bevContainer.innerHTML = bevHtml;
+
+  // Desserts
+  const desContainer = document.getElementById('dessertsContainer');
+  const dessertQuota = formula.desserts;
+  let desHtml = `<h3 class="dv2-category-title" style="margin-top:var(--space-xl);margin-bottom:var(--space-md);">Desserts</h3>`;
+  if (dessertQuota > 0) {
+    desHtml += `<p class="dv2-category-hint" style="margin-bottom:var(--space-md);">${dessertQuota} dessert${dessertQuota > 1 ? 's' : ''} inclus dans votre formule</p>`;
+  }
+  desHtml += '<div class="dv2-items-list">';
+  for (const des of DESSERTS) {
+    const isSelected = state.selectedDesserts.includes(des.id);
+    const idx = state.selectedDesserts.indexOf(des.id);
+    const isIncluded = idx >= 0 && idx < dessertQuota;
+    desHtml += `
+      <div class="dv2-item-row${isSelected ? ' selected' : ''}" data-item="${des.id}" onclick="toggleDessert('${des.id}')">
+        <div class="dv2-item-check">${isSelected ? '\u2713' : ''}</div>
+        <div class="dv2-item-info">
+          <div class="dv2-item-name">${des.name}</div>
+        </div>
+        <div class="dv2-item-tag">${isSelected ? (isIncluded ? 'inclus' : des.price + '\u20AC/pers') : des.price + '\u20AC/pers'}</div>
+      </div>`;
+  }
+  desHtml += '</div>';
+  desContainer.innerHTML = desHtml;
 }
 
-function adjustQty(itemId, delta) {
-  const item = getItemById(itemId);
-  if (!item) return;
-
-  const current = state.selections[itemId] ? state.selections[itemId].qty : 0;
-  const newQty = Math.max(0, current + delta);
-
-  if (newQty === 0) {
-    delete state.selections[itemId];
-  } else {
-    state.selections[itemId] = { qty: newQty, item };
-  }
-
-  // Update DOM
-  const qtyEl = document.getElementById('qty-' + itemId);
-  if (qtyEl) qtyEl.textContent = newQty;
-
-  const itemEl = document.getElementById('item-' + itemId);
-  if (itemEl) {
-    if (newQty > 0) itemEl.classList.add('selected');
-    else itemEl.classList.remove('selected');
-  }
-
-  updateLivePrice();
+function toggleBeverage(id) {
+  const idx = state.selectedBeverages.indexOf(id);
+  if (idx >= 0) state.selectedBeverages.splice(idx, 1);
+  else state.selectedBeverages.push(id);
+  renderBeveragesAndDesserts();
+  updatePriceBar();
 }
 
-/* ============================================================
-   STEP 3 — OPTIONS
-   ============================================================ */
-function toggleOption(key, el) {
-  const isChecked = el.classList.contains('checked');
-  if (isChecked) {
-    el.classList.remove('checked');
-    state.options[key] = false;
-  } else {
-    el.classList.add('checked');
-    state.options[key] = true;
-  }
-}
-
-/* ============================================================
-   STEP 4 — LOGISTICS
-   ============================================================ */
-function updatePersons(val) {
-  state.persons = parseInt(val, 10);
-  const el = document.getElementById('personsValue');
-  if (el) el.textContent = val;
-  updateLivePrice();
-}
-
-function toggleService(el) {
-  const isChecked = el.classList.contains('checked');
-  if (isChecked) {
-    el.classList.remove('checked');
-    state.service = false;
-  } else {
-    el.classList.add('checked');
-    state.service = true;
-  }
-  updateLivePrice();
+function toggleDessert(id) {
+  const idx = state.selectedDesserts.indexOf(id);
+  if (idx >= 0) state.selectedDesserts.splice(idx, 1);
+  else state.selectedDesserts.push(id);
+  renderBeveragesAndDesserts();
+  updatePriceBar();
 }
 
 /* ============================================================
    PRICE CALCULATION
    ============================================================ */
-function calcTotal() {
-  let total = 0;
-  for (const sel of Object.values(state.selections)) {
-    const { qty, item } = sel;
-    if (item.unit === '/pers') {
-      total += item.price * qty * state.persons;
-    } else {
-      // /pièce — qty = number of pieces per person equivalent
-      total += item.price * qty;
+function calcPricePerPerson() {
+  const formula = FORMULAS[state.formula];
+  if (!formula) return 0;
+
+  let ppp = formula.price;
+
+  // Extra mezzes
+  const extraMezzes = Math.max(0, state.selectedMezzes.length - formula.mezzes);
+  ppp += extraMezzes * EXTRA_PRICES.mezzes;
+
+  // Extra proteins
+  const extraProteins = Math.max(0, state.selectedProteins.length - formula.proteins);
+  ppp += extraProteins * EXTRA_PRICES.proteins;
+
+  // Extra bases
+  const extraBases = Math.max(0, state.selectedBases.length - formula.bases);
+  ppp += extraBases * EXTRA_PRICES.bases;
+
+  // Desserts: first N included, rest paid
+  const paidDesserts = state.selectedDesserts.slice(formula.desserts);
+  for (const did of paidDesserts) {
+    const des = DESSERTS.find(d => d.id === did);
+    if (des) ppp += des.price;
+  }
+
+  // Beverages: free if L formula
+  if (!formula.beveragesIncluded) {
+    for (const bid of state.selectedBeverages) {
+      const bev = BEVERAGES.find(b => b.id === bid);
+      if (bev) ppp += bev.price;
     }
   }
-  if (state.service) {
-    total += 5 * state.persons;
-  }
-  return total;
+
+  // Service
+  if (state.extras.service) ppp += 5;
+
+  return ppp;
+}
+
+function calcTotal() {
+  return calcPricePerPerson() * state.persons;
 }
 
 function formatPrice(n) {
-  return n.toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' €';
+  return n.toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' \u20AC';
 }
 
-function updateLivePrice() {
-  const el = document.getElementById('livePrice');
-  if (el) el.textContent = formatPrice(calcTotal());
+function formatPriceDecimal(n) {
+  return n.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' \u20AC';
+}
+
+function updatePriceBar() {
+  const ppp = calcPricePerPerson();
+  const total = ppp * state.persons;
+  const elPPP = document.getElementById('pricePerPerson');
+  const elTotal = document.getElementById('priceTotal');
+  const elLabel = document.getElementById('pricePersonsLabel');
+  if (elPPP) elPPP.textContent = formatPriceDecimal(ppp);
+  if (elTotal) elTotal.textContent = formatPrice(total);
+  if (elLabel) elLabel.textContent = '(' + state.persons + ' pers.)';
 }
 
 /* ============================================================
-   STEP 5 — RECAP
+   STEP 6 — RECAP
    ============================================================ */
-const EVENT_LABELS = {
-  mariage: '💍 Mariage',
-  anniversaire: '🎂 Anniversaire',
-  corporate: '💼 Corporate',
-  cocktail: '🍸 Cocktail',
-  prive: '👨‍👩‍👧‍👦 Privé / Famille',
-  autre: '✨ Autre'
-};
-
 function renderRecap() {
-  // Basics
-  const recapEvent = document.getElementById('recapEvent');
-  if (recapEvent) recapEvent.textContent = EVENT_LABELS[state.eventType] || (state.eventType || '—');
+  const formula = FORMULAS[state.formula];
 
-  const recapPersons = document.getElementById('recapPersons');
-  if (recapPersons) recapPersons.textContent = state.persons + ' personnes';
+  // Event section
+  const eventSection = document.getElementById('recapEventSection');
+  eventSection.innerHTML = `
+    <div class="recap-row"><span class="recap-label">Événement</span><span class="recap-value">${EVENT_LABELS[state.eventType] || '\u2014'}</span></div>
+    <div class="recap-row"><span class="recap-label">Personnes</span><span class="recap-value">${state.persons} personnes</span></div>
+    <div class="recap-row"><span class="recap-label">Style</span><span class="recap-value">${STYLE_LABELS[state.style] || '\u2014'}</span></div>
+    <div class="recap-row"><span class="recap-label">Formule</span><span class="recap-value">${state.formula} \u2014 ${formula ? formula.label : '\u2014'} (${formula ? formula.price : 0}\u20AC/pers)</span></div>
+  `;
 
-  const recapDate = document.getElementById('recapDate');
-  if (recapDate) recapDate.textContent = state.date ? formatDate(state.date) : '—';
+  // Menu section
+  const menuSection = document.getElementById('recapMenuSection');
+  let menuHtml = '<h3 style="color:var(--gold);font-family:var(--font-heading);margin-bottom:var(--space-md);font-size:1rem;">Menu sélectionné</h3>';
 
-  const recapTime = document.getElementById('recapTime');
-  if (recapTime) recapTime.textContent = state.time || '—';
+  if (state.selectedMezzes.length > 0) {
+    menuHtml += '<div style="margin-bottom:var(--space-sm);color:var(--text-secondary);font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;">Mezzés</div>';
+    const mQuota = formula ? formula.mezzes : 0;
+    state.selectedMezzes.forEach((id, i) => {
+      const item = MEZZES.find(m => m.id === id);
+      if (!item) return;
+      const isExtra = i >= mQuota;
+      menuHtml += `<div class="recap-row"><span class="recap-label">${item.name}</span><span class="recap-value">${isExtra ? '+' + EXTRA_PRICES.mezzes + '\u20AC/pers' : 'inclus'}</span></div>`;
+    });
+  }
 
-  const recapAddress = document.getElementById('recapAddress');
-  if (recapAddress) recapAddress.textContent = state.address || '—';
+  if (state.selectedProteins.length > 0) {
+    menuHtml += '<div style="margin-top:var(--space-md);margin-bottom:var(--space-sm);color:var(--text-secondary);font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;">Protéines</div>';
+    const pQuota = formula ? formula.proteins : 0;
+    state.selectedProteins.forEach((id, i) => {
+      const item = PROTEINS.find(p => p.id === id);
+      if (!item) return;
+      const isExtra = i >= pQuota;
+      menuHtml += `<div class="recap-row"><span class="recap-label">${item.name}</span><span class="recap-value">${isExtra ? '+' + EXTRA_PRICES.proteins + '\u20AC/pers' : 'inclus'}</span></div>`;
+    });
+  }
 
-  // Items
-  const recapItems = document.getElementById('recapItems');
-  if (recapItems) {
-    const entries = Object.values(state.selections);
-    if (entries.length === 0) {
-      recapItems.innerHTML = '<p style="color:var(--text-muted);text-align:center;">Aucun article sélectionné</p>';
-    } else {
-      let html = '';
-      for (const sel of entries) {
-        const { qty, item } = sel;
-        let lineTotal;
-        let qtyLabel;
-        if (item.unit === '/pers') {
-          lineTotal = item.price * qty * state.persons;
-          qtyLabel = `×${qty} × ${state.persons} pers.`;
-        } else {
-          lineTotal = item.price * qty;
-          qtyLabel = `×${qty} pièces`;
-        }
-        html += `
-          <div class="recap-row">
-            <span class="recap-label">${item.name} <small style="color:var(--text-muted);">(${qtyLabel} × ${item.price} €)</small></span>
-            <span class="recap-value">${formatPrice(lineTotal)}</span>
-          </div>`;
-      }
-      if (state.service) {
-        html += `
-          <div class="recap-row">
-            <span class="recap-label">Service sur place</span>
-            <span class="recap-value">${formatPrice(5 * state.persons)}</span>
-          </div>`;
-      }
-      recapItems.innerHTML = html;
+  if (state.selectedBases.length > 0) {
+    menuHtml += '<div style="margin-top:var(--space-md);margin-bottom:var(--space-sm);color:var(--text-secondary);font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;">Bases</div>';
+    const bQuota = formula ? formula.bases : 0;
+    state.selectedBases.forEach((id, i) => {
+      const item = BASES.find(b => b.id === id);
+      if (!item) return;
+      const isExtra = i >= bQuota;
+      menuHtml += `<div class="recap-row"><span class="recap-label">${item.name}</span><span class="recap-value">${isExtra ? '+' + EXTRA_PRICES.bases + '\u20AC/pers' : 'inclus'}</span></div>`;
+    });
+  }
+
+  menuSection.innerHTML = menuHtml;
+
+  // Extras section (beverages + desserts)
+  const extrasSection = document.getElementById('recapExtrasSection');
+  let extrasHtml = '';
+
+  if (state.selectedBeverages.length > 0) {
+    extrasHtml += '<div style="margin-bottom:var(--space-sm);color:var(--text-secondary);font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;">Boissons</div>';
+    for (const bid of state.selectedBeverages) {
+      const bev = BEVERAGES.find(b => b.id === bid);
+      if (!bev) continue;
+      const isFree = formula && formula.beveragesIncluded;
+      extrasHtml += `<div class="recap-row"><span class="recap-label">${bev.name}</span><span class="recap-value">${isFree ? 'inclus' : bev.price + '\u20AC/pers'}</span></div>`;
     }
   }
 
+  if (state.selectedDesserts.length > 0) {
+    extrasHtml += '<div style="margin-top:var(--space-md);margin-bottom:var(--space-sm);color:var(--text-secondary);font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;">Desserts</div>';
+    const dQuota = formula ? formula.desserts : 0;
+    state.selectedDesserts.forEach((id, i) => {
+      const des = DESSERTS.find(d => d.id === id);
+      if (!des) return;
+      const isIncluded = i < dQuota;
+      extrasHtml += `<div class="recap-row"><span class="recap-label">${des.name}</span><span class="recap-value">${isIncluded ? 'inclus' : des.price + '\u20AC/pers'}</span></div>`;
+    });
+  }
+
+  if (state.extras.service) {
+    extrasHtml += `<div class="recap-row"><span class="recap-label">Service sur place</span><span class="recap-value">+5\u20AC/pers</span></div>`;
+  }
+
+  extrasSection.innerHTML = extrasHtml || '<p style="color:var(--text-muted);">Aucun extra sélectionné</p>';
+
   // Total
-  const recapTotal = document.getElementById('recapTotal');
-  if (recapTotal) recapTotal.textContent = formatPrice(calcTotal());
+  const totalSection = document.getElementById('recapTotalSection');
+  const ppp = calcPricePerPerson();
+  const total = calcTotal();
+  totalSection.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div class="recap-total-label">Total estimé</div>
+        <div style="color:var(--text-secondary);font-size:0.9rem;">${formatPriceDecimal(ppp)} / personne &times; ${state.persons} pers.</div>
+      </div>
+      <div class="recap-total-amount">${formatPrice(total)}</div>
+    </div>`;
 }
 
 function formatDate(dateStr) {
-  if (!dateStr) return '—';
+  if (!dateStr) return '\u2014';
   const d = new Date(dateStr + 'T00:00:00');
   return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
 /* ============================================================
-   SEND BY EMAIL
+   SEND DEVIS
    ============================================================ */
 function sendDevis() {
-  const name = document.getElementById('contactName').value.trim();
-  const email = document.getElementById('contactEmail').value.trim();
-  const phone = document.getElementById('contactPhone').value.trim();
+  const name = (document.getElementById('contactName').value || '').trim();
+  const email = (document.getElementById('contactEmail').value || '').trim();
+  const phone = (document.getElementById('contactPhone').value || '').trim();
+  const message = (document.getElementById('contactMessage').value || '').trim();
 
-  state.contact = { name, email, phone };
+  state.contact = { name, email, phone, message };
+  state.date = (document.getElementById('eventDate').value || '');
+  state.time = (document.getElementById('eventTime').value || '');
 
   if (!name || !email) {
     alert('Merci de renseigner votre nom et votre email.');
     return;
   }
 
-  const body = buildEmailBody();
-  const subject = encodeURIComponent('Demande de devis — Le Traiteur Libanais');
-  const bodyEncoded = encodeURIComponent(body);
-  const to = 'contact@letraiteurlibanais.com';
-
-  window.location.href = `mailto:${to}?subject=${subject}&body=${bodyEncoded}`;
-}
-
-function buildEmailBody() {
-  const lines = [];
-  lines.push('DEMANDE DE DEVIS — LE TRAITEUR LIBANAIS');
-  lines.push('==========================================');
-  lines.push('');
-  lines.push('CONTACT');
-  lines.push(`Nom     : ${state.contact.name || '—'}`);
-  lines.push(`Email   : ${state.contact.email || '—'}`);
-  lines.push(`Tél     : ${state.contact.phone || '—'}`);
-  lines.push('');
-  lines.push('ÉVÉNEMENT');
-  lines.push(`Type    : ${EVENT_LABELS[state.eventType] || state.eventType || '—'}`);
-  lines.push(`Personnes: ${state.persons}`);
-  lines.push(`Date    : ${state.date ? formatDate(state.date) : '—'}`);
-  lines.push(`Heure   : ${state.time || '—'}`);
-  lines.push(`Adresse : ${state.address || '—'}`);
-  lines.push('');
-  lines.push('OPTIONS ALIMENTAIRES');
-  const optList = Object.entries(state.options).filter(([, v]) => v).map(([k]) => k);
-  lines.push(optList.length > 0 ? optList.join(', ') : 'Aucune option spécifique');
-  lines.push('');
-  lines.push('MENU SÉLECTIONNÉ');
-  lines.push('---');
-
-  for (const sel of Object.values(state.selections)) {
-    const { qty, item } = sel;
-    let lineTotal, qtyLabel;
-    if (item.unit === '/pers') {
-      lineTotal = item.price * qty * state.persons;
-      qtyLabel = `×${qty} × ${state.persons} pers.`;
-    } else {
-      lineTotal = item.price * qty;
-      qtyLabel = `×${qty} pièces`;
-    }
-    lines.push(`• ${item.name} (${qtyLabel} × ${item.price} €) = ${formatPrice(lineTotal)}`);
-  }
-
-  if (state.service) {
-    lines.push(`• Service sur place (${state.persons} pers. × 5 €) = ${formatPrice(5 * state.persons)}`);
-  }
-
-  lines.push('');
-  lines.push(`TOTAL ESTIMÉ : ${formatPrice(calcTotal())}`);
-  lines.push('');
-  lines.push('---');
-  lines.push('Ce devis est indicatif et sera confirmé par notre équipe.');
-
-  return lines.join('\n');
+  alert('Merci ! Nous vous recontacterons sous 24h.');
 }
 
 /* ============================================================
@@ -430,26 +651,28 @@ function buildEmailBody() {
    ============================================================ */
 function downloadPDF() {
   const { jsPDF } = window.jspdf;
-  if (!jsPDF) {
-    alert('La librairie PDF n\'est pas chargée. Veuillez réessayer.');
-    return;
-  }
+  if (!jsPDF) { alert('La librairie PDF n\'est pas chargée.'); return; }
+
+  // Gather contact info
+  state.contact.name = (document.getElementById('contactName').value || '').trim();
+  state.contact.email = (document.getElementById('contactEmail').value || '').trim();
+  state.contact.phone = (document.getElementById('contactPhone').value || '').trim();
+  state.contact.message = (document.getElementById('contactMessage').value || '').trim();
+  state.date = (document.getElementById('eventDate').value || '');
+  state.time = (document.getElementById('eventTime').value || '');
 
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
   const W = 210;
   const margin = 20;
   let y = margin;
 
-  // Header background
+  // Header
   doc.setFillColor(26, 26, 46);
   doc.rect(0, 0, W, 45, 'F');
-
-  // Gold accent line
   doc.setDrawColor(212, 175, 55);
   doc.setLineWidth(1);
   doc.line(margin, 42, W - margin, 42);
 
-  // Title
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(20);
   doc.setTextColor(212, 175, 55);
@@ -457,30 +680,29 @@ function downloadPDF() {
 
   doc.setFontSize(11);
   doc.setTextColor(200, 190, 160);
-  doc.text('SIMULATEUR DE DEVIS', W / 2, 27, { align: 'center' });
+  doc.text('DEVIS PERSONNALIS\u00C9', W / 2, 27, { align: 'center' });
 
   doc.setFontSize(9);
   doc.setTextColor(150, 140, 120);
   const dateNow = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-  doc.text(`Généré le ${dateNow}`, W / 2, 35, { align: 'center' });
+  doc.text('G\u00E9n\u00E9r\u00E9 le ' + dateNow, W / 2, 35, { align: 'center' });
 
   y = 55;
 
-  // Section helper
   function sectionTitle(title) {
-    doc.setFillColor(212, 175, 55, 0.1);
-    doc.setDrawColor(212, 175, 55);
-    doc.setLineWidth(0.3);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
     doc.setTextColor(212, 175, 55);
     doc.text(title.toUpperCase(), margin, y);
+    doc.setDrawColor(212, 175, 55);
+    doc.setLineWidth(0.3);
     doc.line(margin, y + 2, W - margin, y + 2);
     y += 8;
   }
 
-  function row(label, value, bold = false) {
-    doc.setFont('helvetica', bold ? 'bold' : 'normal');
+  function row(label, value) {
+    if (y > 270) { doc.addPage(); y = 20; }
+    doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
     doc.setTextColor(60, 60, 80);
     doc.text(label, margin, y);
@@ -489,114 +711,128 @@ function downloadPDF() {
     y += 6;
   }
 
-  // Event info
-  sectionTitle('Événement');
-  row('Type', EVENT_LABELS[state.eventType] || state.eventType || '—');
+  const formula = FORMULAS[state.formula];
+
+  // Event
+  sectionTitle('\u00C9v\u00E9nement');
+  row('Type', EVENT_LABELS[state.eventType] || '\u2014');
   row('Personnes', state.persons + ' personnes');
-  row('Date', state.date ? formatDate(state.date) : '—');
-  row('Heure', state.time || '—');
-  row('Adresse', state.address || '—');
+  row('Style', STYLE_LABELS[state.style] || '\u2014');
+  row('Formule', state.formula + ' \u2014 ' + (formula ? formula.label : '\u2014') + ' (' + (formula ? formula.price : 0) + '\u20AC/pers)');
+  row('Date', state.date ? formatDate(state.date) : '\u2014');
+  row('Heure', state.time || '\u2014');
   y += 4;
 
-  // Contact info
+  // Contact
   sectionTitle('Contact');
-  const name = document.getElementById('contactName') ? document.getElementById('contactName').value : '';
-  const email = document.getElementById('contactEmail') ? document.getElementById('contactEmail').value : '';
-  const phone = document.getElementById('contactPhone') ? document.getElementById('contactPhone').value : '';
-  row('Nom', name || '—');
-  row('Email', email || '—');
-  row('Téléphone', phone || '—');
+  row('Nom', state.contact.name || '\u2014');
+  row('Email', state.contact.email || '\u2014');
+  row('T\u00E9l\u00E9phone', state.contact.phone || '\u2014');
   y += 4;
 
-  // Options
-  sectionTitle('Options alimentaires');
-  const optList = Object.entries(state.options).filter(([, v]) => v).map(([k]) => k);
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10);
-  doc.setTextColor(60, 60, 80);
-  doc.text(optList.length > 0 ? optList.join(' • ') : 'Aucune option spécifique', margin, y);
-  y += 8;
+  // Menu
+  sectionTitle('Menu s\u00E9lectionn\u00E9');
 
-  // Menu items
-  sectionTitle('Menu sélectionné');
-
-  const selections = Object.values(state.selections);
-  if (selections.length === 0) {
-    doc.setFont('helvetica', 'italic');
-    doc.setFontSize(10);
-    doc.setTextColor(120, 120, 140);
-    doc.text('Aucun article sélectionné', margin, y);
-    y += 6;
-  } else {
-    // Table header
-    doc.setFillColor(240, 235, 220);
-    doc.rect(margin, y - 4, W - 2 * margin, 7, 'F');
+  function printCategory(title, items, selectedIds, quota, extraPrice, allItems) {
+    if (selectedIds.length === 0) return;
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9);
-    doc.setTextColor(50, 50, 70);
-    doc.text('Article', margin + 2, y);
-    doc.text('Qté', margin + 80, y, { align: 'center' });
-    doc.text('P.U.', margin + 110, y, { align: 'center' });
-    doc.text('Total', W - margin - 2, y, { align: 'right' });
-    y += 7;
-
-    let rowBg = false;
-    for (const sel of selections) {
-      const { qty, item } = sel;
-      let lineTotal, qtyLabel;
-      if (item.unit === '/pers') {
-        lineTotal = item.price * qty * state.persons;
-        qtyLabel = `×${qty} (${state.persons}p)`;
-      } else {
-        lineTotal = item.price * qty;
-        qtyLabel = `×${qty} pcs`;
-      }
-
-      if (rowBg) {
-        doc.setFillColor(248, 246, 240);
-        doc.rect(margin, y - 4, W - 2 * margin, 6.5, 'F');
-      }
-      rowBg = !rowBg;
-
+    doc.setTextColor(80, 80, 100);
+    doc.text(title, margin, y);
+    y += 5;
+    selectedIds.forEach(function(id, i) {
+      if (y > 270) { doc.addPage(); y = 20; }
+      var item = allItems.find(function(x) { return x.id === id; });
+      if (!item) return;
+      var isExtra = i >= quota;
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(9);
       doc.setTextColor(40, 40, 60);
-      doc.text(item.name, margin + 2, y);
-      doc.text(qtyLabel, margin + 80, y, { align: 'center' });
-      doc.text(item.price.toFixed(2) + ' €', margin + 110, y, { align: 'center' });
-      doc.text(formatPrice(lineTotal), W - margin - 2, y, { align: 'right' });
-      y += 6.5;
-    }
+      doc.text('\u2022 ' + item.name, margin + 4, y);
+      doc.text(isExtra ? '+' + extraPrice + '\u20AC/pers' : 'inclus', W - margin, y, { align: 'right' });
+      y += 5;
+    });
+    y += 2;
+  }
 
-    if (state.service) {
-      doc.setFont('helvetica', 'italic');
+  if (formula) {
+    printCategory('MEZZ\u00C9S', MEZZES, state.selectedMezzes, formula.mezzes, EXTRA_PRICES.mezzes, MEZZES);
+    printCategory('PROT\u00C9INES', PROTEINS, state.selectedProteins, formula.proteins, EXTRA_PRICES.proteins, PROTEINS);
+    printCategory('BASES', BASES, state.selectedBases, formula.bases, EXTRA_PRICES.bases, BASES);
+  }
+
+  // Beverages
+  if (state.selectedBeverages.length > 0) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    doc.setTextColor(80, 80, 100);
+    doc.text('BOISSONS', margin, y);
+    y += 5;
+    for (const bid of state.selectedBeverages) {
+      if (y > 270) { doc.addPage(); y = 20; }
+      const bev = BEVERAGES.find(b => b.id === bid);
+      if (!bev) continue;
+      doc.setFont('helvetica', 'normal');
       doc.setFontSize(9);
-      doc.setTextColor(80, 80, 100);
-      doc.text('Service sur place', margin + 2, y);
-      doc.text(`${state.persons} pers.`, margin + 80, y, { align: 'center' });
-      doc.text('5.00 €', margin + 110, y, { align: 'center' });
-      doc.text(formatPrice(5 * state.persons), W - margin - 2, y, { align: 'right' });
-      y += 6.5;
+      doc.setTextColor(40, 40, 60);
+      doc.text('\u2022 ' + bev.name, margin + 4, y);
+      doc.text(formula && formula.beveragesIncluded ? 'inclus' : bev.price + '\u20AC/pers', W - margin, y, { align: 'right' });
+      y += 5;
     }
+    y += 2;
+  }
+
+  // Desserts
+  if (state.selectedDesserts.length > 0) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    doc.setTextColor(80, 80, 100);
+    doc.text('DESSERTS', margin, y);
+    y += 5;
+    const dQuota = formula ? formula.desserts : 0;
+    state.selectedDesserts.forEach((id, i) => {
+      if (y > 270) { doc.addPage(); y = 20; }
+      const des = DESSERTS.find(d => d.id === id);
+      if (!des) return;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(40, 40, 60);
+      doc.text('\u2022 ' + des.name, margin + 4, y);
+      doc.text(i < dQuota ? 'inclus' : des.price + '\u20AC/pers', W - margin, y, { align: 'right' });
+      y += 5;
+    });
+    y += 2;
+  }
+
+  if (state.extras.service) {
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(9);
+    doc.setTextColor(80, 80, 100);
+    doc.text('\u2022 Service sur place : +5\u20AC/pers', margin + 4, y);
+    y += 6;
   }
 
   y += 4;
 
   // Total box
+  if (y > 260) { doc.addPage(); y = 20; }
   doc.setFillColor(212, 175, 55);
-  doc.rect(margin, y, W - 2 * margin, 12, 'F');
+  doc.rect(margin, y, W - 2 * margin, 14, 'F');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(13);
+  doc.setFontSize(11);
   doc.setTextColor(26, 26, 46);
-  doc.text('TOTAL ESTIMÉ', margin + 4, y + 8);
-  doc.text(formatPrice(calcTotal()), W - margin - 4, y + 8, { align: 'right' });
-  y += 18;
+  doc.text('PRIX / PERSONNE', margin + 4, y + 6);
+  doc.text(formatPriceDecimal(calcPricePerPerson()), margin + 80, y + 6);
+  doc.setFontSize(13);
+  doc.text('TOTAL', margin + 4, y + 12);
+  doc.text(formatPrice(calcTotal()), W - margin - 4, y + 12, { align: 'right' });
+  y += 20;
 
   // Disclaimer
   doc.setFont('helvetica', 'italic');
   doc.setFontSize(8);
   doc.setTextColor(140, 130, 110);
-  const disclaimer = 'Ce devis est indicatif et établi sur la base des informations fournies. Il sera confirmé par notre équipe dans les 48h. TVA non applicable selon article 293B du CGI.';
+  const disclaimer = 'Ce devis est indicatif. Il sera confirm\u00E9 par notre \u00E9quipe dans les 48h. TVA non applicable selon article 293B du CGI.';
   const lines = doc.splitTextToSize(disclaimer, W - 2 * margin);
   doc.text(lines, margin, y);
   y += lines.length * 4 + 4;
@@ -608,7 +844,7 @@ function downloadPDF() {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(140, 130, 110);
-  doc.text('Le Traiteur Libanais — Lyon, France', margin, 285);
+  doc.text('Le Traiteur Libanais \u2014 Lyon, France', margin, 285);
   doc.text('contact@letraiteurlibanais.com | 04 72 00 00 00', W - margin, 285, { align: 'right' });
 
   doc.save('devis-traiteur-libanais.pdf');
@@ -618,28 +854,7 @@ function downloadPDF() {
    DOM READY
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
-  renderMenuItems();
-  renderWizard();
-
-  // Bind logistics inputs
-  const dateInput = document.getElementById('eventDate');
-  if (dateInput) dateInput.addEventListener('change', e => { state.date = e.target.value; });
-
-  const timeInput = document.getElementById('eventTime');
-  if (timeInput) timeInput.addEventListener('change', e => { state.time = e.target.value; });
-
-  const addrInput = document.getElementById('eventAddress');
-  if (addrInput) addrInput.addEventListener('input', e => { state.address = e.target.value; });
-
-  // Focus fix for date/time inputs on dark background
-  [dateInput, timeInput, addrInput].forEach(inp => {
-    if (!inp) return;
-    inp.addEventListener('focus', () => { inp.style.borderColor = 'var(--gold)'; inp.style.outline = 'none'; });
-    inp.addEventListener('blur', () => { inp.style.borderColor = 'rgba(212,175,55,0.2)'; });
-  });
-});
-
-function renderWizard() {
+  renderEventGrid();
+  renderStyleGrid();
   goToStep(1);
-  updateLivePrice();
-}
+});
