@@ -265,19 +265,35 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "FoodEstablishment",
-    "name": "Le Traiteur Libanais",
-    "description": "Traiteur libanais d'exception à Lyon",
-    "url": "https://letraiteurlibanais.com",
-    "telephone": "+33472000000",
-    "email": "contact@letraiteurlibanais.com",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Lyon",
-      "addressCountry": "FR"
-    },
-    "servesCuisine": "Lebanese",
-    "priceRange": "€€-€€€"
+    "@type": "ContactPage",
+    "name": "Contact — Le Traiteur Libanais",
+    "url": "https://letraiteurlibanais.com/contact.html",
+    "mainEntity": {
+      "@type": "FoodEstablishment",
+      "name": "Le Traiteur Libanais",
+      "url": "https://letraiteurlibanais.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Lyon",
+        "addressRegion": "Auvergne-Rhône-Alpes",
+        "addressCountry": "FR"
+      },
+      "areaServed": [
+        {"@type": "City", "name": "Lyon"},
+        {"@type": "City", "name": "Villeurbanne"},
+        {"@type": "City", "name": "Caluire-et-Cuire"}
+      ]
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://letraiteurlibanais.com/"},
+      {"@type": "ListItem", "position": 2, "name": "Contact", "item": "https://letraiteurlibanais.com/contact.html"}
+    ]
   }
   </script>
 

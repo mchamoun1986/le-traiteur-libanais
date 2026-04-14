@@ -180,18 +180,40 @@
   {
     "@context": "https://schema.org",
     "@type": "FoodEstablishment",
+    "additionalType": "https://schema.org/CateringOrFoodEstablishment",
     "name": "Le Traiteur Libanais",
-    "description": "Traiteur libanais d'exception à Lyon",
+    "description": "Traiteur libanais à Lyon. Mezzés, verrines, bowls et buffets fait maison pour entreprises, anniversaires et événements.",
     "url": "https://letraiteurlibanais.com",
-    "telephone": "+33472000000",
-    "email": "contact@letraiteurlibanais.com",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Lyon",
+      "addressRegion": "Auvergne-Rhône-Alpes",
       "addressCountry": "FR"
     },
-    "servesCuisine": "Lebanese",
-    "priceRange": "€€-€€€"
+    "areaServed": [
+      {"@type": "City", "name": "Lyon"},
+      {"@type": "City", "name": "Villeurbanne"},
+      {"@type": "City", "name": "Caluire-et-Cuire"},
+      {"@type": "City", "name": "Bron"},
+      {"@type": "City", "name": "Vénissieux"},
+      {"@type": "City", "name": "Écully"},
+      {"@type": "City", "name": "Tassin-la-Demi-Lune"}
+    ],
+    "servesCuisine": "Libanaise",
+    "priceRange": "€€-€€€",
+    "currenciesAccepted": "EUR",
+    "paymentAccepted": "Cash, Credit Card",
+    "knowsLanguage": ["fr", "ar", "en"],
+    "sameAs": []
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://letraiteurlibanais.com/"}
+    ]
   }
   </script>
 
